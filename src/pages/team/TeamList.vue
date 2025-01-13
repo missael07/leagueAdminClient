@@ -7,14 +7,14 @@
                         <v-btn class="font-weight-regular mt-2 add" color="primary" prepend-icon="mdi-plus"
                             text="Agregar Equipo" to="/team/createTeam">
                             <template #prepend>
-                                <v-icon class="btn-icon" color="surface" />
+                                <v-icon class="btn-icon" />
                             </template>
                         </v-btn>
                     </v-col>
                 </v-row>
                 <v-row dense class="mb-2 mr-5">
                     <v-col>
-                        <v-text-field v-model="filterValues.term" placeholder="Search By Team"
+                        <v-text-field v-model="filterValues.term" placeholder="Buscar..."
                             prepend-inner-icon="mdi-magnify" style="max-width: 300px;" clearable hide-details
                             @input="filter" @click:clear="filter" />
                     </v-col>

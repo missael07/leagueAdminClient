@@ -32,7 +32,7 @@ const useSignIn = () => {
             });
 
             displayLoader.value = false;
-            return response.data
+            return response.data.item
         } catch (error) {
             displayLoader.value = false;
             if (axios.isAxiosError(error)) {
@@ -43,6 +43,7 @@ const useSignIn = () => {
         }
     }
 
+    
     return {
         auth,
         signIn,

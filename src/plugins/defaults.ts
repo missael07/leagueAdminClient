@@ -20,7 +20,10 @@ export default {
     },
     VBtn: {
       // set v-btn default color to primary
-      color: 'primary'
+      color: 'primary',
+      VIcon: {
+        color: 'white'
+      }
     },
     VChip: {
       elevation: 6,

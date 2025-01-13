@@ -11,14 +11,18 @@
     <v-spacer />
     <div class="icon-container d-flex justify-end">
       <v-icon
-        :icon="theme.global.current.value.dark
+      :icon="theme.global.current.value.dark
           ? 'mdi-white-balance-sunny'
           : 'mdi-weather-night'
         "
-        color="surface"
+        color="white"
         @click="toggleTheme"
-      />
-      <v-spacer />
+        />
+        <v-icon
+          :icon="icons.signOutIcon"
+          color="white"
+          @click="signOut"
+        />
     </div>
   </v-app-bar>
 </template>
@@ -26,8 +30,15 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
 import useToggleTheme from '@/composables/useToggleTheme';
+import { icons } from '@/utils/consts/icons';
 
 const { theme, toggleTheme } = useToggleTheme();
+
+const signOut = () => {
+  localStorage.removeItem('authToken');
+  window.location.reload();
+}
+
 </script>
 
 <style scoped>

@@ -52,8 +52,8 @@
 import useHandleError from '@/composables/useHandleErrors';
 import { ref } from 'vue';
 import useSignIn from './composables/useSignIn';
-import { succesModal } from '@/services/sweetAlert.service';
 import useToggleTheme from '@/composables/useToggleTheme';
+import { useRouter } from 'vue-router';
 
 const { theme, toggleTheme } = useToggleTheme();
 const email = ref('');
@@ -62,12 +62,14 @@ const valid = ref(false);
 
 const { getErrors, errors, resetErrors } = useHandleError();
 const { signIn, auth } = useSignIn();
+const router = useRouter();
 
 const submit = async () => {
   resetErrors();
   const response = await signIn();
   if (response) {
-    succesModal(response.item.token)
+    localStorage.setItem('authToken', response.token);
+    router.push('/team/teamlist')
   }
   console.log('Iniciando sesión con:', { email: email.value, password: password.value });
 };

@@ -18,4 +18,5 @@ export const icons = {
     sentOnIcon: 'mdi-calendar-check-outline',
     moveOutIcon: 'mdi-export',
     currencyIcon: 'mdi-currency-usd',
+    signOutIcon: 'mdi-exit-to-app'
 }

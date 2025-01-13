@@ -5,8 +5,19 @@
  */
 
 // Composables
+import { isAuthenticated } from '@/auth/validateAuth.service';
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
+
+
+const protectedRoutes = routes.map(route => {
+
+  if(!route.path.includes('/signIn')){
+    return {...route, meta: { requiresAuth: true }};
+  }
+  return route;
+})
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,7 +37,7 @@ const router = createRouter({
           /* webpackChunkName: "create company contact" */ "@/layout/AdminLayout.vue"
         ),
       children: [
-        ...routes,
+        ...protectedRoutes,
         {
           path: '',
           redirect: 'team/teamlist', // Redirección automática a una ruta específica
@@ -43,6 +54,19 @@ const router = createRouter({
     },
   ],
 })
+
+router.beforeEach( async (to, from, next) => {
+ 
+  console.log(isAuthenticated())
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    next({ path: '/signin' });  // Redirige al login si no está autenticado
+  } else if(to.path.includes('signin')  && isAuthenticated() ){
+    console.log(to.path);
+    next({ path: '/team/teamlist' });  // Redirige al login si no está autenticado
+  } else {
+    next();  // Permite el acceso si no requiere autenticación o si está autenticado
+  }
+});
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
 router.onError((err, to) => {

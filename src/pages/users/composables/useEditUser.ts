@@ -1,11 +1,10 @@
 import { ref } from "vue"
 import axios from "axios";
-
 import type { Response } from "@/interfaces/reponse.interface";
 import useHandleError from "@/composables/useHandleErrors";
-import { Branch, Role } from "@/enums/globaEnums";
 import useLoader from "@/composables/useLoader";
 import type { UserResponse } from "../interface/userResponse";
+import { Role } from "@/enums/globaEnums";
 
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}`;
@@ -62,7 +61,31 @@ const useEditUser = () => {
         }
     }
 
+    const changeUserStatus = async (userId: number) => {
+        displayLoader.value = true;
+        const token = localStorage.getItem("token");
+        const Authorization = `Bearer ${token}`;
+        try {
+            const response = await axios.put<Response<UserResponse>>(`${BASE_URL}/users/${userId}`, null, {
+                headers: {
+                    Authorization,
+                },
+            });
+            user.value = response.data.item;
+            displayLoader.value = false;
+            return response.data
+        } catch (error) {
+            displayLoader.value = false;
+            if (axios.isAxiosError(error)) {
+                displayErrors(error);
+            } else {
+                console.error("Unexpected error:", error);
+            }
+        }
+    }
+
     return {
+        changeUserStatus,
         editUser,
         user,
         term
