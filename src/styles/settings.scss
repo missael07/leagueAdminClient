@@ -1,0 +1,105 @@
+/**
+ * src/styles/settings.scss
+ *
+ * Configures SASS variables and Vuetify overwrites
+ */
+
+// https://vuetifyjs.com/features/sass-variables/`
+// @use 'vuetify/settings' with (
+//   $color-pack: false
+// );
+body {
+  margin: '0';                  // Elimina el margen predeterminado
+  padding: '0';                 // Elimina el padding
+  font-family: 'Roboto, sans-serif';  // Usa una tipografía personalizada (Roboto por defecto)
+  font-size: '16px';             // Tamaño de fuente base
+  line-height: '1.5';            // Altura de línea para mejorar la legibilidad
+  background-color: 'var(--v-background)';  // Color de fondo dinámico (del tema)
+  color: 'rgb(var(--v-theme-primary))';            // Color de texto principal
+}
+
+.v-list-item--active {
+    background: linear-gradient(-72.47deg, rgb(var(--v-theme-primary)) 22.16%, rgba(var(--v-theme-primary), .7) 76.47%) !important;
+    box-shadow: 0 3px 6px rgba(var(--v-shadow-key-umbra-color), var(--v-shadow-sm-opacity)), 0 0 transparent, 0 0 transparent;
+    color: rgb(var(--v-theme-surface)) !important;
+  
+  }
+  
+  .v-list-item--nav:hover {
+    text-decoration: none !important;
+  }
+  body {
+    background-color: var(--v-theme-background) !important;
+    color: var(--v-theme-on-surface-variant) !important;
+  }
+  
+  html, body {
+    
+    scrollbar-color: linear-gradient(-72.47deg, rgb(var(--v-theme-primary)) 22.16%, rgba(var(--v-theme-primary), .7) 76.47%) rgba(0, 0, 0, 0.1);
+  }
+  
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(-72.47deg, rgb(var(--v-theme-primary)) 22.16%, rgba(var(--v-theme-primary), .7) 76.47%);
+    border-radius: 10px;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      -72.47deg, 
+      rgba(var(--v-theme-primary), 0.7) 22.16%, 
+      rgb(var(--v-theme-primary)) 76.47%
+    );
+  }
+  
+  a {
+    color: rgb(var(--v-theme-primary));
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: rgb(var(--v-theme-primary-darken-1));
+    text-decoration: none;
+  }
+  
+  button {
+    background-color: var(--v-theme-primary) !important;
+    border: 1px solid var(--v-theme-border-color) !important;
+  }
+
+  .checkbox .v-icon {
+    color: rgb(var(--v-theme-primary)); /* Cambia el color del icono aquí */
+  }
+
+.v-icon {
+    color: rgb(var(--v-theme-primary));
+}
+
+.error-message {
+  color: red;
+}
+
+.v-input .is-invalid {
+  border-color: red !important;
+}
+
+/* Estilos para el modo claro */
+.swal2-popup.light-mode {
+  background-color: #F5F5F5;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+}
+
+/* Estilos para el modo oscuro */
+.swal2-popup.dark-mode {
+  background-color: #28243D;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+}
