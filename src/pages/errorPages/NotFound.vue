@@ -7,7 +7,7 @@
         La página que buscas no existe o se movió a otro lugar.
       </p>
       <router-link
-        to="/team/teamlist"
+        to="/admin/team/teamlist"
         class="back-home"
       >
         Volver al inicio

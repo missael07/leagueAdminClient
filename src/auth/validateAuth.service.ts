@@ -1,3 +1,4 @@
+import type { Role } from "@/enums/globaEnums";
 import { jwtDecode } from "jwt-decode";
 
 interface JWTResponse {
@@ -11,18 +12,34 @@ export function isAuthenticated() {
     const token = localStorage.getItem('authToken');
     if (!token) return false;
     try {
-      const decoded = jwtDecode<JWTResponse>(token);
-      const currentTime = Date.now() / 1000;
-  
-      // Si el token ha expirado, no hagas la llamada a la API
-      if (decoded.exp <= currentTime) {
-        return false;
-      }
+        const decoded = jwtDecode<JWTResponse>(token);
+        const currentTime = Date.now() / 1000;
 
-      return true;
+        // Si el token ha expirado, no hagas la llamada a la API
+        if (decoded.exp <= currentTime) {
+            return false;
+        }
+
+        return true;
     } catch (e) {
-      console.error("Error during token validation:", e);
-      return false;
+        console.error("Error during token validation:", e);
+        return false;
+    }
+}
+
+export function isAuthorized(requiredRoles: Role[]) {
+    const token = localStorage.getItem('authToken');
+    if (!token) return false;
+    try {
+        const userRole = getUserRole(token);
+        console.log(userRole, requiredRoles)
+        if (requiredRoles.includes(+userRole)) {
+            return true
+        }
+        return false;
+    } catch (e) {
+        console.error("Error during token validation:", e);
+        return false;
     }
 }
 

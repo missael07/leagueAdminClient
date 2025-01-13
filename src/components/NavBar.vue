@@ -16,13 +16,14 @@
   </v-avatar>
   <v-divider />
   <v-list density="compact" nav>
-      <v-list-item v-for="item in menu" :key="item.menuItem" :to="item.menuRoute" router 
-        :title="item.menuItem" :value="item.menuRoute" :class="{ 'v-list-item--active': isActive(item.menuRoute) }"
-        class="nav-item" > 
-        <template #prepend>
-          <v-icon :color="isActive(item.menuRoute) ? 'white': 'primary'">{{ item.menuIcon }}</v-icon>
-        </template>
-      </v-list-item>
+    <v-list-item v-for="item in menu" :key="item.menuItem" :to="item.menuRoute" router :title="item.menuItem"
+      :value="item.menuRoute" :class="{ 'v-list-item--active': isActive(item.menuRoute) }" class="nav-item">
+      <template #prepend>
+        <v-icon :color="isActive(item.menuRoute) ? 'white' : 'primary'">
+          {{ item.menuIcon }}
+        </v-icon>
+      </template>
+    </v-list-item>
   </v-list>
 </template>
 
@@ -35,12 +36,12 @@ const { getMenu, menu } = useMenu();
 const route = useRoute();
 
 onMounted(async () => {
-    await getMenu();
+  await getMenu();
 });
 
 const isActive = (path: string) => {
   const splittedPath = path.split('/');
-  return route.path.startsWith(`/${splittedPath[1]}`);
+  return route.path.includes(`/${splittedPath[2]}`);
 }
 
 </script>

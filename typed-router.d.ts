@@ -20,14 +20,15 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/account/Settings': RouteRecordInfo<'/account/Settings', '/account/Settings', Record<never, never>, Record<never, never>>,
+    '/admin/rosters/RosterList': RouteRecordInfo<'/admin/rosters/RosterList', '/admin/rosters/RosterList', Record<never, never>, Record<never, never>>,
+    '/admin/team/[Id]': RouteRecordInfo<'/admin/team/[Id]', '/admin/team/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
+    '/admin/team/CreateTeam': RouteRecordInfo<'/admin/team/CreateTeam', '/admin/team/CreateTeam', Record<never, never>, Record<never, never>>,
+    '/admin/team/TeamList': RouteRecordInfo<'/admin/team/TeamList', '/admin/team/TeamList', Record<never, never>, Record<never, never>>,
+    '/admin/users/[Id]': RouteRecordInfo<'/admin/users/[Id]', '/admin/users/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
+    '/admin/users/CreateUser': RouteRecordInfo<'/admin/users/CreateUser', '/admin/users/CreateUser', Record<never, never>, Record<never, never>>,
+    '/admin/users/UsersList': RouteRecordInfo<'/admin/users/UsersList', '/admin/users/UsersList', Record<never, never>, Record<never, never>>,
     '/auth/SignIn': RouteRecordInfo<'/auth/SignIn', '/auth/SignIn', Record<never, never>, Record<never, never>>,
     '/errorPages/NotFound': RouteRecordInfo<'/errorPages/NotFound', '/errorPages/NotFound', Record<never, never>, Record<never, never>>,
-    '/rosters/RosterList': RouteRecordInfo<'/rosters/RosterList', '/rosters/RosterList', Record<never, never>, Record<never, never>>,
-    '/team/[Id]': RouteRecordInfo<'/team/[Id]', '/team/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
-    '/team/CreateTeam': RouteRecordInfo<'/team/CreateTeam', '/team/CreateTeam', Record<never, never>, Record<never, never>>,
-    '/team/TeamList': RouteRecordInfo<'/team/TeamList', '/team/TeamList', Record<never, never>, Record<never, never>>,
-    '/users/[Id]': RouteRecordInfo<'/users/[Id]', '/users/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
-    '/users/CreateUser': RouteRecordInfo<'/users/CreateUser', '/users/CreateUser', Record<never, never>, Record<never, never>>,
-    '/users/UsersList': RouteRecordInfo<'/users/UsersList', '/users/UsersList', Record<never, never>, Record<never, never>>,
+    '/errorPages/Unauthorized': RouteRecordInfo<'/errorPages/Unauthorized', '/errorPages/Unauthorized', Record<never, never>, Record<never, never>>,
   }
 }

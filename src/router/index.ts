@@ -5,7 +5,8 @@
  */
 
 // Composables
-import { isAuthenticated } from '@/auth/validateAuth.service';
+import { isAuthenticated, isAuthorized } from '@/auth/validateAuth.service';
+import type { Role } from '@/enums/globaEnums';
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 
@@ -13,6 +14,9 @@ import { routes } from 'vue-router/auto-routes'
 const protectedRoutes = routes.map(route => {
 
   if(!route.path.includes('/signIn')){
+    if(route.path.includes('/admin'))
+      return {...route, meta: { requiresAuth: true, rolesRequired: [1] }};
+    else
     return {...route, meta: { requiresAuth: true }};
   }
   return route;
@@ -26,7 +30,15 @@ const router = createRouter({
       path: '/signin',
       component: () =>
         import(
-          /* webpackChunkName: "create company contact" */ "@/pages/auth/SignIn.vue"
+          /* webpackChunkName: "sign in page" */ "@/pages/auth/SignIn.vue"
+        ),
+      meta: { layout: false }, // Indica que no usa layout
+    },
+    {
+      path: '/unauthorized',
+      component: () =>
+        import(
+          /* webpackChunkName: "unauthorized" */ "@/pages/errorPages/Unauthorized.vue"
         ),
       meta: { layout: false }, // Indica que no usa layout
     },
@@ -34,13 +46,13 @@ const router = createRouter({
       path: '/',
       component: () =>
         import(
-          /* webpackChunkName: "create company contact" */ "@/layout/AdminLayout.vue"
+          /* webpackChunkName: "admin layout" */ "@/layout/AdminLayout.vue"
         ),
       children: [
         ...protectedRoutes,
         {
           path: '',
-          redirect: 'team/teamlist', // Redirección automática a una ruta específica
+          redirect: '/admin/team/teamlist', // Redirección automática a una ruta específica
         }
       ], // Las rutas automáticas se convierten en hijas del layout
     },
@@ -55,16 +67,30 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach( async (to, from, next) => {
- 
-  console.log(isAuthenticated())
-  if (to.meta.requiresAuth && !isAuthenticated()) {
+router.beforeEach(async (to, from, next) => {
+  const isUserAuthenticated = isAuthenticated(); // Verifica si el usuario está autenticado
+
+  // Si la ruta requiere autenticación y el usuario no está autenticado
+  if (to.meta.requiresAuth && !isUserAuthenticated) {
     next({ path: '/signin' });  // Redirige al login si no está autenticado
-  } else if(to.path.includes('signin')  && isAuthenticated() ){
-    console.log(to.path);
-    next({ path: '/team/teamlist' });  // Redirige al login si no está autenticado
+  } else if (to.path.includes('signin') && isUserAuthenticated) {
+    // Si la ruta es de login y el usuario ya está autenticado
+    // Comprobamos si tiene permisos para acceder a la ruta después del login
+    console.log(to.meta.rolesRequired)
+    if (isAuthorized(to.meta.rolesRequired as Role[])) {
+      next({ path: '/admin/team/teamlist' });  // Redirige al dashboard u otra página
+    } else {
+      next({ path: '/unauthorized' });  // Si no está autorizado, acceso denegado
+    }
   } else {
-    next();  // Permite el acceso si no requiere autenticación o si está autenticado
+    // Si la ruta no es para el login
+    // Comprobamos si tiene el rol adecuado para acceder
+    if (to.meta.rolesRequired && !isAuthorized(to.meta.rolesRequired as Role[])) {
+      next({ path: '/unauthorized' });  // Si no está autorizado, acceso denegado
+    } else {
+      console.log(to.meta.rolesRequired)
+      next();  // Si todo está bien, permite el acceso
+    }
   }
 });
 
