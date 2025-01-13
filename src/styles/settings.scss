@@ -14,8 +14,9 @@ body {
   font-family: 'Roboto, sans-serif';  // Usa una tipografía personalizada (Roboto por defecto)
   font-size: '16px';             // Tamaño de fuente base
   line-height: '1.5';            // Altura de línea para mejorar la legibilidad
-  background-color: 'var(--v-background)';  // Color de fondo dinámico (del tema)
+  // background-color: 'var(--v-background)';  // Color de fondo dinámico (del tema)
   color: 'rgb(var(--v-theme-primary))';            // Color de texto principal
+  background: linear-gradient(135deg, rgb(var(--v-theme-background)), rgb(var(--v-theme-primary))) !important;
 }
 
 .v-list-item--active {
@@ -28,13 +29,15 @@ body {
   .v-list-item--nav:hover {
     text-decoration: none !important;
   }
+  .v-main {
+    background: linear-gradient(135deg, rgb(var(--v-theme-background)), rgb(var(--v-theme-primary)));
+  }
   body {
-    background-color: var(--v-theme-background) !important;
+    // background-color: var(--v-theme-background) !important;
     color: var(--v-theme-on-surface-variant) !important;
   }
   
   html, body {
-    
     scrollbar-color: linear-gradient(-72.47deg, rgb(var(--v-theme-primary)) 22.16%, rgba(var(--v-theme-primary), .7) 76.47%) rgba(0, 0, 0, 0.1);
   }
   

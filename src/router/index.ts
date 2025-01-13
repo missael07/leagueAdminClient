@@ -12,6 +12,14 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/signin',
+      component: () =>
+        import(
+          /* webpackChunkName: "create company contact" */ "@/pages/auth/SignIn.vue"
+        ),
+      meta: { layout: false }, // Indica que no usa layout
+    },
+    {
       path: '/',
       component: () =>
         import(
