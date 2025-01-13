@@ -5,7 +5,7 @@
                 <v-row dense class="mb-2 mr-5">
                     <v-col cols="12" md="10" sm="6">
                         <v-btn class="font-weight-regular mt-2 add" color="primary" prepend-icon="mdi-plus"
-                            text="Agregar Usuario" to="/users/createUser">
+                            text="Agregar Usuario" to="/admin/users/createUser">
                             <template #prepend>
                                 <v-icon class="btn-icon" />
                             </template>
@@ -42,7 +42,7 @@
                         <td>{{ item.fullName }}</td>
                         <td>{{ item.email }}</td>
                         <td>
-                            {{ item.roleName }}
+                            {{ getRoleText(item.role) }}
                         </td>
                         <td>
                             {{ item.team.join(',') }}
@@ -81,6 +81,7 @@ import { useRouter } from 'vue-router';
 import useUser from './composables/useUsers';
 import useEditUser from './composables/useEditUser';
 import { succesModal } from '@/services/sweetAlert.service';
+import { Role } from '@/enums/globaEnums';
 
 
 const { getUsers, users, usersHeader, filterValues } = useUser();
@@ -110,6 +111,17 @@ const getChiptext = (status: boolean) => {
     }
 }
 
+const getRoleText = (role: Role) => {
+    switch (role) {
+        case Role.admin:
+            return Labels.roleLabels.adminRoleText
+        case Role.manager:
+            return Labels.roleLabels.managerRoleText
+        case Role.coach:
+            return Labels.roleLabels.coachRoleText
+
+    }
+}
 
 const getStatusChipColor = (status: boolean) => {
     switch (status) {
@@ -121,7 +133,7 @@ const getStatusChipColor = (status: boolean) => {
 }
 
 const editUser = (userId: number) => {
-    router.push(`/users/${userId} `);
+    router.push(`/admin/users/${userId} `);
 }
 
 const changeStatus = async (userId: number) => {
@@ -131,6 +143,8 @@ const changeStatus = async (userId: number) => {
         await filter();
     }
 }
+
+
 
 
 </script>

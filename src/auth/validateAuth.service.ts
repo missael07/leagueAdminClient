@@ -6,6 +6,7 @@ interface JWTResponse {
     userName: string;
     id: string;
     exp: number;
+    teamId: number;
 }
 
 export function isAuthenticated() {
@@ -31,8 +32,7 @@ export function isAuthorized(requiredRoles: Role[]) {
     const token = localStorage.getItem('authToken');
     if (!token) return false;
     try {
-        const userRole = getUserRole(token);
-        console.log(userRole, requiredRoles)
+        const userRole = getUserRole();
         if (requiredRoles.includes(+userRole)) {
             return true
         }
@@ -44,12 +44,10 @@ export function isAuthorized(requiredRoles: Role[]) {
 }
 
 // Esta función obtiene el rol del usuario desde el token JWT
-export const getUserRole = (token: string): string => {
+export const getUserRole = (): string => {
     try {
-        const decoded = jwtDecode<JWTResponse>(token);
-        if (decoded.role === '4') {
-            localStorage.setItem('roleValue', decoded.role)
-        }
+        const token = localStorage.getItem('authToken');
+        const decoded = jwtDecode<JWTResponse>(token!);
         return decoded.role;
     } catch (e) {
         console.error("Error decoding token:", e);
@@ -57,12 +55,24 @@ export const getUserRole = (token: string): string => {
     }
 };
 
-export const getUserId = (token: string): string => {
+export const getUserId = (): string => {
     try {
-        const decoded = jwtDecode<JWTResponse>(token);
+        const token = localStorage.getItem('authToken');
+        const decoded = jwtDecode<JWTResponse>(token!);
         return decoded.id;
     } catch (e) {
         console.error("Error decoding token:", e);
         return '';
+    }
+};
+
+export const getTeamId = (): number => {
+    try {
+        const token = localStorage.getItem('authToken');
+        const decoded = jwtDecode<JWTResponse>(token!);
+        return decoded.teamId;
+    } catch (e) {
+        console.error("Error decoding token:", e);
+        return 0;
     }
 };

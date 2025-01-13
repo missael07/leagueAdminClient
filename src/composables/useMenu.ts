@@ -1,6 +1,7 @@
 import { ref } from "vue"
 import axios from "axios";
 import { errorModal } from "@/services/sweetAlert.service";
+import { getUserRole } from "@/auth/validateAuth.service";
 
 
 const menu = ref<MenuItem[]>([]);
@@ -16,10 +17,11 @@ const useMenu = () => {
 
   const getMenu = async () => {
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
+    const role = getUserRole(token!);
     try {
-      const response = await axios.get(`${BASE_URL}/menu?role=${1}`, {
+      const response = await axios.get(`${BASE_URL}/menu?role=${role}`, {
         headers: {
           Authorization,
         },

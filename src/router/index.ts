@@ -76,7 +76,6 @@ router.beforeEach(async (to, from, next) => {
   } else if (to.path.includes('signin') && isUserAuthenticated) {
     // Si la ruta es de login y el usuario ya está autenticado
     // Comprobamos si tiene permisos para acceder a la ruta después del login
-    console.log(to.meta.rolesRequired)
     if (isAuthorized(to.meta.rolesRequired as Role[])) {
       next({ path: '/admin/team/teamlist' });  // Redirige al dashboard u otra página
     } else {
@@ -88,7 +87,6 @@ router.beforeEach(async (to, from, next) => {
     if (to.meta.rolesRequired && !isAuthorized(to.meta.rolesRequired as Role[])) {
       next({ path: '/unauthorized' });  // Si no está autorizado, acceso denegado
     } else {
-      console.log(to.meta.rolesRequired)
       next();  // Si todo está bien, permite el acceso
     }
   }

@@ -54,6 +54,9 @@ import { ref } from 'vue';
 import useSignIn from './composables/useSignIn';
 import useToggleTheme from '@/composables/useToggleTheme';
 import { useRouter } from 'vue-router';
+import { getUserRole } from '@/auth/validateAuth.service';
+import { Role } from '@/enums/globaEnums';
+import { succesModal } from '@/services/sweetAlert.service';
 
 const { theme, toggleTheme } = useToggleTheme();
 const email = ref('');
@@ -67,9 +70,24 @@ const router = useRouter();
 const submit = async () => {
   resetErrors();
   const response = await signIn();
+  succesModal(email.value)
   if (response) {
     localStorage.setItem('authToken', response.token);
-    router.push('/team/teamlist')
+    const userRole = getUserRole();
+
+    switch (+userRole) {
+      case Role.admin:
+        console.log('Role', userRole);
+        router.push('/admin/team/teamlist')
+        break;
+      case Role.coach:
+      case Role.manager:
+        router.push('/managers/team/teampage')
+        break;
+      default:
+        router.push('/unauthorized')
+        break;
+    }
   }
   console.log('Iniciando sesión con:', { email: email.value, password: password.value });
 };

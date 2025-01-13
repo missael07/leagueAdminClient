@@ -20,7 +20,6 @@ const useHandleError = () => {
       const handleErrors = (error: AxiosError) => {
         const errorData = <ErrorResponse>error.response?.data;
         if(errorData) {
-            console.log(errorData);
           if (errorData.State === State.invalid) {
             handleValidationErrors(errorData.ValidationResults.InvalidItems);
           } else {

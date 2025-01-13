@@ -20,7 +20,7 @@
                             <v-text-field v-model="user.email" :label="Labels.userLabels.emailText" :error-messages="getErrors(errors, 'email')" />
                         </v-col>
                         <v-col cols="4">
-                            <v-text-field v-model="user.phoneNumber" :label="Labels.userLabels.phoneNumText":error-messages="getErrors(errors, 'phoneNumber')" />
+                            <v-text-field v-model="user.phoneNumber" :label="Labels.userLabels.phoneNumText" :error-messages="getErrors(errors, 'phoneNumber')" />
                         </v-col>
                         <v-col cols="4">
                             <v-select v-model="teamId" item-title="title" item-value="value" :label="Labels.userLabels.teamText"
@@ -36,7 +36,7 @@
                 </v-form>
             </v-card-text>
             <v-card-actions class="d-flex justify-end mr-4">
-                <v-btn text="Cancelar" variant="plain" to="/users/usersList" />
+                <v-btn text="Cancelar" variant="plain" to="/admin/users/usersList" />
                 <v-btn class="text-none font-weight-regular bg-primary" :prepend-icon="icons.saveIcon" text="Guardar"
                     color="surface" @click="save">
                     <template #prepend>
@@ -53,7 +53,7 @@ import useHandleError from '@/composables/useHandleErrors';
 import { succesModal } from '@/services/sweetAlert.service';
 import { icons } from '@/utils/consts/icons';
 import { onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { Labels } from '@/utils/consts/string';
 import { roles } from '@/utils/consts/roles';
 import useTeam from '../team/composables/useTeam';
@@ -65,7 +65,6 @@ const { editUser, user } = useEditUser();
 const { getUser } = useUser();
 const { getErrors, errors, resetErrors } = useHandleError();
 const { getTeamsForSelect } = useTeam();
-const router = useRouter();
 const route = useRoute();
 
 const teamId = ref(0);
@@ -79,7 +78,6 @@ const getData = async () => {
     teams.value = await getTeamsForSelect();
     teams.value.unshift({ title: Labels.userLabels.selectTeamText, value: 0 });
     const userId = route.params.Id;
-    console.log(userId);
     const response = await getUser(+userId);
     if (response) {
         user.value.firstName = response.firstName;

@@ -10,7 +10,6 @@
   </template>
   
   <script setup lang="ts">
-  console.log('loader');
   </script>
 
 <style scoped>

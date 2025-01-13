@@ -17,7 +17,7 @@
                             <v-text-field v-model="user.email" :label="Labels.userLabels.emailText" :error-messages="getErrors(errors, 'email')" />
                         </v-col>
                         <v-col cols="4">
-                            <v-text-field v-model="user.phoneNumber" :label="Labels.userLabels.phoneNumText":error-messages="getErrors(errors, 'phoneNumber')" />
+                            <v-text-field v-model="user.phoneNumber" :label="Labels.userLabels.phoneNumText" :error-messages="getErrors(errors, 'phoneNumber')" />
                         </v-col>
                         <v-col cols="4">
                             <v-select v-model="teamId" item-title="title" item-value="value" :label="Labels.userLabels.teamText"
@@ -33,7 +33,7 @@
                 </v-form>
             </v-card-text>
             <v-card-actions class="d-flex justify-end mr-4">
-                <v-btn text="Cancelar" variant="plain" to="/users/usersList" />
+                <v-btn text="Cancelar" variant="plain" to="/admin/users/usersList" />
                 <v-btn class="text-none font-weight-regular bg-primary" :prepend-icon="icons.saveIcon" text="Guardar"
                     color="surface" @click="save">
                     <template #prepend>
@@ -68,7 +68,6 @@ onMounted(async () => {
     resetErrors();
     teams.value = await getTeamsForSelect();
     teams.value.unshift({ title: Labels.userLabels.selectTeamText, value: 0 });
-    console.log(teams);
 });
 
 const save = async () => {
@@ -76,7 +75,7 @@ const save = async () => {
     const response = await createUser(teamId.value);
     if (response) {
         succesModal(response.message);
-        router.push(`/users/${response.item.id}`);
+        router.push(`/admin/users/${response.item.id}`);
     }
 }
 

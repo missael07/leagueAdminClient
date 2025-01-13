@@ -7,25 +7,25 @@
             <v-card-text>     
                 <v-form>
                     <v-row>
-                        <v-col cols="4">
+                        <v-col :cols="$vuetify.display.mdAndDown ? 12 : 3">
                             <v-text-field v-model="team.name" :label="Labels.teamLabels.nameText" :error-messages="getErrors(errors, 'name')" />
                         </v-col>
-                        <v-col cols="4">
+                        <v-col :cols="$vuetify.display.mdAndDown ? 12 : 3">
                             <v-select v-model="team.category" item-title="title" item-value="value" :label="Labels.categoriesLabels.categoryText"
                                 :items="categories" required item-color="white" class="user-companies"
                                 :error-messages="getErrors(errors, 'category')" variant="solo" />
                         </v-col>
-                        <v-col cols="3">
+                        <v-col :cols="$vuetify.display.mdAndDown ? 12 : 2">
                             <v-select v-model="team.branch" item-title="title" item-value="value" :label="Labels.branchLabels.branchText"
                                 :items="branches" required item-color="white" class="user-companies"
                                 :error-messages="getErrors(errors, 'branch')" variant="solo" />
                         </v-col>
-                        <v-col cols="2">
+                        <v-col :cols="$vuetify.display.mdAndDown ? 12 : 2">
                             <v-select v-model="team.isPaid" item-title="title" item-value="value" :label="Labels.paidLabels.isPaidText"
                                 :items="paidOptions" required item-color="white" class="user-companies"
                                 :error-messages="getErrors(errors, 'isPaid')" variant="solo" />
                         </v-col>
-                        <v-col cols="2">
+                        <v-col :cols="$vuetify.display.mdAndDown ? 12 : 2">
                             <v-select v-model="team.isActive" item-title="title" item-value="value" :label="Labels.statusLabels.statusText"
                                 :items="statusTypes" required item-color="white" class="user-companies"
                                 :error-messages="getErrors(errors, 'isPaid')" variant="solo" />
@@ -34,7 +34,7 @@
                 </v-form>
             </v-card-text>
             <v-card-actions class="d-flex justify-end mr-4">
-                <v-btn text="Cancelar" variant="plain" to="/team/teamList" />
+                <v-btn text="Cancelar" variant="plain" to="/admin/team/teamList" />
                 <v-btn class="text-none font-weight-regular bg-primary" :prepend-icon="icons.saveIcon" text="Guardar"
                     color="surface" @click="save">
                     <template #prepend>
@@ -69,7 +69,6 @@ onMounted(async () => {
     resetErrors();
     const id = +route.params.Id;
     const response = await getTeam(id);
-    console.log(response);
     if(response){
         team.value.name = response.name;
         team.value.category = response.category;
@@ -77,7 +76,6 @@ onMounted(async () => {
         team.value.isPaid = response.isPaid;
         team.value.id = response.id;
     }
-    console.log(team.value);
 });
 
 const save = async () => {

@@ -7,7 +7,7 @@
         La página que buscas no existe o se movió a otro lugar.
       </p>
       <router-link
-        to="/admin/team/teamlist"
+        :to="path"
         class="back-home"
       >
         Volver al inicio
@@ -18,7 +18,38 @@
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { getUserRole } from '@/auth/validateAuth.service';
+import { Role } from '@/enums/globaEnums';
+import { onMounted, ref } from 'vue';
 
+
+const path = ref('');
+onMounted(() => {
+  path.value = redirectTo();
+  console.log(path.value)
+});
+ 
+const redirectTo = () => {
+  const userRole = getUserRole();
+  let path = '';
+  console.log(userRole);
+  switch (+userRole) {
+    case Role.admin:
+      path = '/admin/team/teamlist';
+      break;
+    case Role.coach:
+    case Role.manager:
+      path = '/managers/team/teampage';
+      break;
+    default:
+      path = '/unauthorized';
+      break;
+  }
+
+  return path;
+}
+</script>
 <style scoped>
 .not-found {
   display: flex;

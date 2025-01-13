@@ -5,7 +5,7 @@
                 <v-row dense class="mb-2 mr-5">
                     <v-col cols="12" md="10" sm="6">
                         <v-btn class="font-weight-regular mt-2 add" color="primary" prepend-icon="mdi-plus"
-                            text="Agregar Equipo" to="/team/createTeam">
+                            text="Agregar Equipo" to="/admin/team/createTeam">
                             <template #prepend>
                                 <v-icon class="btn-icon" />
                             </template>
@@ -157,7 +157,7 @@ const getStatusChipColor = (status: boolean) => {
 }
 
 const editTeam = (teamId: number) => {
-    router.push(`/team/${teamId} `);
+    router.push(`/admin/team/${teamId} `);
 }
 
 const changeStatus = async (teamId: number) => {

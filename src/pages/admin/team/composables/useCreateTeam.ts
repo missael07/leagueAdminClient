@@ -25,7 +25,7 @@ const useCreateTeam = () => {
     const { displayErrors } = useHandleError();
     const { displayLoader } = useLoader();
 
-    const createTeam = async (email: string) => {
+    const createTeam = async () => {
         displayLoader.value = true;
         const token = localStorage.getItem("token");
         const Authorization = `Bearer ${token}`;
@@ -35,7 +35,6 @@ const useCreateTeam = () => {
                 category: team.value.category,
                 branch: team.value.branch,
                 isPaid: team.value.isPaid,
-                email
             }
             const response = await axios.post<Response<TeamResponse>>(`${BASE_URL}/teams`, data, {
                 headers: {
