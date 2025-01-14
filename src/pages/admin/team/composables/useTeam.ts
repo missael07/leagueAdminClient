@@ -3,6 +3,8 @@ import axios from "axios";
 import { errorModal } from "@/services/sweetAlert.service";
 import type { TeamResponse } from "../interface/teamResponse.interface";
 import useLoader from "@/composables/useLoader";
+import { Category } from "@/enums/globaEnums";
+import { Labels } from "@/utils/consts/string";
 
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}`;
@@ -31,7 +33,7 @@ const useTeam = () => {
 
   const getTeams = async () => {
     displayLoader.value = true;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
     // Convertir el objeto a una cadena JSON
     const queryParams = {
@@ -55,7 +57,7 @@ const useTeam = () => {
   }
 
   const getTeam = async (teamId: number) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
 
     try {
@@ -77,7 +79,7 @@ const useTeam = () => {
 
   const getTeamsForSelect = async () => {
     displayLoader.value = true;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
     try {
       const response = await axios.get(`${BASE_URL}/teams/getTeamsForSelect`, {
@@ -94,6 +96,53 @@ const useTeam = () => {
       }
     }
   }
+
+  const getChiptext = (status: boolean) => {
+    switch (status) {
+        case true:
+            return 'Activo'
+        case false:
+            return 'Inactivo'
+
+    }
+}
+
+const getPaidtext = (status: boolean) => {
+    switch (status) {
+        case true:
+            return 'Pagado'
+        case false:
+            return 'Pendiente'
+
+    }
+}
+
+const getCategorytext = (category: Category) => {
+    switch (category) {
+        case Category.r:
+            return Labels.categoriesLabels.rCategoryText;
+        case Category.e:
+            return Labels.categoriesLabels.eCategoryText;
+        case Category.d:
+            return Labels.categoriesLabels.dCategoryText;
+        case Category.c:
+            return Labels.categoriesLabels.cCategoryText;
+        case Category.b:
+            return Labels.categoriesLabels.bCategoryText;
+        case Category.a:
+            return Labels.categoriesLabels.aCategoryText;
+
+    }
+}
+
+const getStatusChipColor = (status: boolean) => {
+    switch (status) {
+        case true:
+            return '#4CAF50'
+        case false:
+            return '#F44336'
+    }
+}
   return {
     filterValues,
     getTeams,
@@ -102,7 +151,10 @@ const useTeam = () => {
     teams,
     teamsHeader,
     term,
-
+    getChiptext,
+    getStatusChipColor,
+    getCategorytext,
+    getPaidtext
   }
 }
 

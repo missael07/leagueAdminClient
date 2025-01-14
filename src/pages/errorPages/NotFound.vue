@@ -27,13 +27,11 @@ import { onMounted, ref } from 'vue';
 const path = ref('');
 onMounted(() => {
   path.value = redirectTo();
-  console.log(path.value)
 });
  
 const redirectTo = () => {
   const userRole = getUserRole();
   let path = '';
-  console.log(userRole);
   switch (+userRole) {
     case Role.admin:
       path = '/admin/team/teamlist';

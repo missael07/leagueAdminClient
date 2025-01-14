@@ -7,10 +7,15 @@ export const errorModal = async (text: string) => {
 export const succesModal = async (text: string) => {
   return await displayModal("success", 'Success', text);
 }
+
+export const sessionExpiredModal = async (text: string) => {
+  return await displayModal("info", 'Success', text);
+}
 const getCurrentTheme = () => {
   // Este es solo un ejemplo; adapta esto a tu lógica de obtención del tema
   return localStorage.getItem("theme") || "light";
 };
+
 
 
 const displayModal = async (icon: SweetAlertIcon, title: string, text: string) => {

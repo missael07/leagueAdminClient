@@ -29,6 +29,8 @@ declare module 'vue-router/auto-routes' {
     '/auth/SignIn': RouteRecordInfo<'/auth/SignIn', '/auth/SignIn', Record<never, never>, Record<never, never>>,
     '/errorPages/NotFound': RouteRecordInfo<'/errorPages/NotFound', '/errorPages/NotFound', Record<never, never>, Record<never, never>>,
     '/errorPages/Unauthorized': RouteRecordInfo<'/errorPages/Unauthorized', '/errorPages/Unauthorized', Record<never, never>, Record<never, never>>,
+    '/managers/rosters/[Id]': RouteRecordInfo<'/managers/rosters/[Id]', '/managers/rosters/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
+    '/managers/rosters/CreateRosterPlayer': RouteRecordInfo<'/managers/rosters/CreateRosterPlayer', '/managers/rosters/CreateRosterPlayer', Record<never, never>, Record<never, never>>,
     '/managers/rosters/RosterList': RouteRecordInfo<'/managers/rosters/RosterList', '/managers/rosters/RosterList', Record<never, never>, Record<never, never>>,
     '/managers/team/TeamPage': RouteRecordInfo<'/managers/team/TeamPage', '/managers/team/TeamPage', Record<never, never>, Record<never, never>>,
   }

@@ -7,6 +7,7 @@
 // Composables
 import { isAuthenticated, isAuthorized } from '@/auth/validateAuth.service';
 import type { Role } from '@/enums/globaEnums';
+import { sessionExpiredModal } from '@/services/sweetAlert.service';
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 
@@ -72,6 +73,7 @@ router.beforeEach(async (to, from, next) => {
 
   // Si la ruta requiere autenticación y el usuario no está autenticado
   if (to.meta.requiresAuth && !isUserAuthenticated) {
+    sessionExpiredModal('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.')
     next({ path: '/signin' });  // Redirige al login si no está autenticado
   } else if (to.path.includes('signin') && isUserAuthenticated) {
     // Si la ruta es de login y el usuario ya está autenticado

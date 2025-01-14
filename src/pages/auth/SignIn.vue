@@ -15,9 +15,6 @@
         <h2 class="signin-title">
           ¡Bienvenido de nuevo!
         </h2>
-        <p class="signin-subtitle">
-          Inicia sesión para gestionar tu temporada
-        </p>
 
         <!-- Formulario -->
         <v-form v-model="valid" class="signin-form">
@@ -39,7 +36,7 @@
 
         <!-- Link para registro o recuperar contraseña -->
         <div class="signin-links">
-          <v-btn variant="text" color="primary" to="/forgot-password">
+          <v-btn variant="text" color="white" to="/forgot-password">
             ¿Olvidaste tu contraseña?
           </v-btn>
         </div>
@@ -56,11 +53,9 @@ import useToggleTheme from '@/composables/useToggleTheme';
 import { useRouter } from 'vue-router';
 import { getUserRole } from '@/auth/validateAuth.service';
 import { Role } from '@/enums/globaEnums';
-import { succesModal } from '@/services/sweetAlert.service';
 
 const { theme, toggleTheme } = useToggleTheme();
-const email = ref('');
-const password = ref('');
+
 const valid = ref(false);
 
 const { getErrors, errors, resetErrors } = useHandleError();
@@ -70,14 +65,11 @@ const router = useRouter();
 const submit = async () => {
   resetErrors();
   const response = await signIn();
-  succesModal(email.value)
   if (response) {
     localStorage.setItem('authToken', response.token);
     const userRole = getUserRole();
-
     switch (+userRole) {
       case Role.admin:
-        console.log('Role', userRole);
         router.push('/admin/team/teamlist')
         break;
       case Role.coach:
@@ -89,7 +81,6 @@ const submit = async () => {
         break;
     }
   }
-  console.log('Iniciando sesión con:', { email: email.value, password: password.value });
 };
 </script>
 
@@ -133,7 +124,7 @@ const submit = async () => {
 }
 
 .signin-subtitle {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgb(var(--v-theme-primary), 0.6);
   text-align: center;
   margin-bottom: 1rem;
   font-size: 14px;

@@ -3,56 +3,51 @@ import axios from "axios";
 import type { Response } from "@/interfaces/reponse.interface";
 import useHandleError from "@/composables/useHandleErrors";
 import useLoader from "@/composables/useLoader";
-import type { UserResponse } from "../interface/userResponse";
-import { Role } from "@/enums/globaEnums";
+import { getTeamId } from "@/auth/validateAuth.service";
+import type { RosterResponse } from "../interfaces/rosterResponse";
 
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}`;
 
-const useEditUser = () => {
+const useCreateRoster = () => {
 
-    const user = ref<UserResponse>({
+    const roster = ref<RosterResponse>({
         id: 0,
-        createdBy: "",
-        email: "",
-        firstName: "",
-        fullName: "",
-        isActive: true,
-        lastName: "",
-        phoneNumber: "",
-        role: Role.selectRole,
-        roleName: "",
-        team: [],
-        teamIds: [],
-        userName: "",
+        name: '',
+        firstName: '',
+        lastName: '',
+        imgUrl: '',
+        blockedToPitch: false,
+        blockedToPlay: false,
+        isReinforcement: false,
     });
     const term = ref("");
     const { displayErrors } = useHandleError();
     const { displayLoader } = useLoader();
 
-    const editUser = async () => {
-        displayLoader.value = true;
+
+    const uploadImg = async (file: File) =>{
         const token = localStorage.getItem("authToken");
         const Authorization = `Bearer ${token}`;
+        if(!file) {
+            return undefined;
+        }
+        const formData = new FormData();
+        
+        // Agregar el archivo
+        formData.append('file', file);
+
         try {
-            const data = {
-                firstName: user.value.firstName,
-                lastName: user.value.lastName,
-                phoneNumber: user.value.phoneNumber,
-                email: user.value.email,
-                roleId: user.value.role,
-                isActive: user.value.isActive
-            }
-            const response = await axios.patch<Response<UserResponse>>(`${BASE_URL}/users/${user.value.id}`, data, {
+            const url = `${BASE_URL}/file-upload/s3`;
+            const result = await axios.post(url, formData, {
                 headers: {
                     Authorization,
+                    'Content-Type': 'multipart/form-data',
                 },
             });
-            user.value = response.data.item;
-            displayLoader.value = false;
-            return response.data
+
+            return result.data.item;
         } catch (error) {
-            displayLoader.value = false;
             if (axios.isAxiosError(error)) {
                 displayErrors(error);
             } else {
@@ -61,17 +56,23 @@ const useEditUser = () => {
         }
     }
 
-    const changeUserStatus = async (userId: number) => {
+    const createRoster = async () => {
         displayLoader.value = true;
         const token = localStorage.getItem("authToken");
         const Authorization = `Bearer ${token}`;
         try {
-            const response = await axios.put<Response<UserResponse>>(`${BASE_URL}/users/${userId}`, null, {
+            const data = {
+                firstName: roster.value.firstName,
+                lastName: roster.value.lastName,
+                imgUrl: roster.value.imgUrl,
+                teamId: getTeamId()
+            }
+            const response = await axios.post<Response<RosterResponse>>(`${BASE_URL}/rosters`, data, {
                 headers: {
                     Authorization,
                 },
             });
-            user.value = response.data.item;
+            roster.value = response.data.item;
             displayLoader.value = false;
             return response.data
         } catch (error) {
@@ -85,11 +86,11 @@ const useEditUser = () => {
     }
 
     return {
-        changeUserStatus,
-        editUser,
-        user,
-        term
+        createRoster,
+        roster,
+        term,
+        uploadImg
     }
 }
 
-export default useEditUser
+export default useCreateRoster;

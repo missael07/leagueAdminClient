@@ -46,5 +46,10 @@ export const Labels = {
     teamLabels: {
         nameText: 'Nombre',
         emailText: 'E-mail',
-    }
+    },
+    rosterLabels: {
+        nameText: 'Nombre',
+        lastNameText: 'Apellido',
+        imageText: 'Foto de Jugador/a'
+    },
 }

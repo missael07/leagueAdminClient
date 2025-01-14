@@ -27,7 +27,7 @@ const useEditTeam = () => {
 
   const editTeam = async () => {
     displayLoader.value = true;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
     try {
       const data = {
@@ -58,7 +58,7 @@ const useEditTeam = () => {
 
   const changeTeamStatus = async (teamId: number) => {
     displayLoader.value = true;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
     try {
 
@@ -80,7 +80,7 @@ const useEditTeam = () => {
 
   const pay = async (teamId: number) => {
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
     try {
 

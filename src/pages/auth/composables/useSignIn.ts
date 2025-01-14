@@ -15,13 +15,13 @@ const useSignIn = () => {
     const { displayLoader } = useLoader();
 
     const auth = ref({
-        userName: '',
-        password: ''
+        userName: 'mpadilla',
+        password: 'L!g4pR3m!3rP@ssw0rd'
     })
 
     const signIn = async () => {
         displayLoader.value = true;
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("authToken");
         const Authorization = `Bearer ${token}`;
         try {
            

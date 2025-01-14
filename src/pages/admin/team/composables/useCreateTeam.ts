@@ -27,7 +27,7 @@ const useCreateTeam = () => {
 
     const createTeam = async () => {
         displayLoader.value = true;
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("authToken");
         const Authorization = `Bearer ${token}`;
         try {
             const data = {

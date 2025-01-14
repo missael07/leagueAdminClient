@@ -1,5 +1,5 @@
 import type { Category, Role } from "@/enums/globaEnums";
-import type { RosterResponse } from "./rosterResponse.interface";
+import type { RosterResponse } from "../../rosters/interfaces/rosterResponse";
 
 export interface UsersTeam {
     teamId:   number;

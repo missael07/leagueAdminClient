@@ -20,8 +20,8 @@
                     </v-col>
                     <v-col>
                         <v-select v-model="filterValues.category" item-title="title" item-value="value"
-                            :label="Labels.categoriesLabels.categoryText" :items="categoriesFilter" required item-color="white"
-                            class="user-companies" clearable hide-details @click:clear="filter" />
+                            :label="Labels.categoriesLabels.categoryText" :items="categoriesFilter" required
+                            item-color="white" class="user-companies" clearable hide-details @click:clear="filter" />
                     </v-col>
                     <v-col>
                         <v-select v-model="filterValues.branch" item-title="title" item-value="value"
@@ -34,9 +34,9 @@
                             class="user-companies" clearable hide-details @click:clear="filter" />
                     </v-col>
                     <v-col>
-                        <v-select v-model="filterValues.isActive" item-title="title" item-value="value" :label="Labels.statusLabels.statusText"
-                            :items="statusTypes" required item-color="white" class="user-companies" clearable
-                            hide-details @click:clear="filter" />
+                        <v-select v-model="filterValues.isActive" item-title="title" item-value="value"
+                            :label="Labels.statusLabels.statusText" :items="statusTypes" required item-color="white"
+                            class="user-companies" clearable hide-details @click:clear="filter" />
                     </v-col>
                 </v-row>
             </template>
@@ -89,10 +89,11 @@ import { statusTypes } from '@/utils/consts/statuses';
 import { useRouter } from 'vue-router';
 import useEditTeam from './composables/useEditTeam';
 import { succesModal } from '@/services/sweetAlert.service';
-import { Category } from '@/enums/globaEnums';
 
 
-const { getTeams, teams, teamsHeader, filterValues } = useTeam();
+const { getTeams, teams, teamsHeader, filterValues, getCategorytext, getChiptext, getPaidtext,
+    getStatusChipColor
+} = useTeam();
 const { changeTeamStatus, pay } = useEditTeam();
 const router = useRouter();
 
@@ -109,52 +110,6 @@ const filter = async () => {
     await getTeams();
 };
 
-const getChiptext = (status: boolean) => {
-    switch (status) {
-        case true:
-            return 'Activo'
-        case false:
-            return 'Inactivo'
-
-    }
-}
-
-const getPaidtext = (status: boolean) => {
-    switch (status) {
-        case true:
-            return 'Pagado'
-        case false:
-            return 'Pendiente'
-
-    }
-}
-
-const getCategorytext = (category: Category) => {
-    switch (category) {
-        case Category.r:
-            return Labels.categoriesLabels.rCategoryText;
-        case Category.e:
-            return Labels.categoriesLabels.eCategoryText;
-        case Category.d:
-            return Labels.categoriesLabels.dCategoryText;
-        case Category.c:
-            return Labels.categoriesLabels.cCategoryText;
-        case Category.b:
-            return Labels.categoriesLabels.bCategoryText;
-        case Category.a:
-            return Labels.categoriesLabels.aCategoryText;
-
-    }
-}
-
-const getStatusChipColor = (status: boolean) => {
-    switch (status) {
-        case true:
-            return '#4CAF50'
-        case false:
-            return '#F44336'
-    }
-}
 
 const editTeam = (teamId: number) => {
     router.push(`/admin/team/${teamId} `);

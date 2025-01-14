@@ -32,7 +32,7 @@ const useUser = () => {
 
   const getUsers = async () => {
     displayLoader.value = true;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
     const queryParams = {
       data: JSON.stringify(filterValues.value)
@@ -55,7 +55,7 @@ const useUser = () => {
   }
 
   const getUser = async (userId: number) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
 
     try {

@@ -47,7 +47,7 @@
                 <v-row dense class="mb-2 mr-5">
                     <v-col cols="12" md="10" sm="6">
                         <v-btn class="font-weight-regular mt-2 add" color="primary" prepend-icon="mdi-plus"
-                            text="Agregar Jugador/a" to="/admin/team/createTeam">
+                            text="Agregar Jugador/a" to="/managers/rosters/createrosterplayer">
                             <template #prepend>
                                 <v-icon class="btn-icon" />
                             </template>
@@ -72,7 +72,7 @@
                     </v-badge>
                 </div>
                 <v-card class=" pa-3 d-flex flex-column mt-6">
-                    <v-data-table :headers="playersHeaders" :items="team.rosters">
+                    <v-data-table :headers="playersHeaders" :items="team.rosters" height="350">
                         <template #headers>
                             <tr>
                                 <td align="center" style="border-bottom: 1px solid;">
@@ -92,27 +92,29 @@
                         <template #item="{ item }">
                             <tr>
                                 <td align="center">
-                                    <v-avatar :image="item.imgUrl" size="76" />
+                                    <v-avatar :image="item.imgUrl" size="125" style="cursor: pointer;"
+                                        @click="openDialog(item.id.toString())" />
+                                    <v-dialog v-model="dialogs[item.id]" width="auto">
+                                        <div class="ma-4">
+                                            <v-img :width="300" aspect-ratio="16/9" class="bg-white" :src="item.imgUrl"
+                                                cover />
+                                        </div>
+                                    </v-dialog>
                                 </td>
                                 <td align="center">
                                     {{ item.name }}
                                 </td>
-                                <td align="center" class="d-flex justify-center">
-                                    <p class="px-4">
-                                        <v-badge v-if="!item.canPlay" left color="rgb(var(--v-theme-error))" />
-                                    </p>
-                                    <p class="px-4">
-                                        <v-badge v-if="!item.canPitch" left color="rgb(var(--v-theme-warning))" />
-                                    </p>
-                                    <p class="px-4">
-                                        <v-badge v-if="item.isReinforcement" left color="rgb(var(--v-theme-success))" />
-                                    </p>
+                                <td align="center">
+                                    <v-badge v-if="item.blockedToPlay" color="rgb(var(--v-theme-error))" />
+                                    <v-badge v-if="item.blockedToPitch" color="rgb(var(--v-theme-warning))" />
+                                    <v-badge v-if="item.isReinforcement" color="rgb(var(--v-theme-success))"
+                                        class="ml-6" />
                                 </td>
                                 <td align="center">
-                                    <v-icon flat>
+                                    <v-icon flat @click="editPlayer(item.id)">
                                         {{ icons.editIcon }}
                                     </v-icon>
-                                    <v-icon flat>
+                                    <v-icon flat @click="deletePlayer(item.id)">
                                         {{ icons.inactiveIcon }}
                                     </v-icon>
                                 </td>
@@ -126,91 +128,37 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { Category, Role } from '@/enums/globaEnums';
-import { Labels } from '@/utils/consts/string';
+import { onMounted, reactive } from 'vue';
 import { icons } from '@/utils/consts/icons';
 import useManagerTeam from '@/pages/managers/team/composable/useManagerTeam';
+import router from '@/router';
+import useEditRoster from '@/pages/managers/rosters/composables/useEditRoster';
+import { succesModal } from '@/services/sweetAlert.service';
 
-const { getTeam, team, playersHeaders } = useManagerTeam();
-
+const { getTeam, team, getCategorytext, getChiptext, getPaidtext, getRoleText, getStatusChipColor, playersHeaders } = useManagerTeam();
+const { deleteRoster } = useEditRoster();
 onMounted(async () => {
-    const response = await getTeam();
-    if (response) {
-        console.log(response.rosters)
-    }
-    console.log(team.value.rosters)
+    await getData();
 })
 
+const getData = async () => {
+    await getTeam();
+}
+const dialogs: Record<string, boolean> = reactive({});
 
-const getChiptext = (status: boolean | undefined) => {
-    switch (status) {
-        case true:
-            return 'Activo'
-        case false:
-            return 'Inactivo'
-    }
+const openDialog = (id: string) => dialogs[id] = true;;
+
+const editPlayer = (id: number) => {
+    router.push(`/managers/rosters/${id}`)
 }
 
-const getPaidtext = (status: boolean | undefined) => {
-    switch (status) {
-        case true:
-            return 'Pagado'
-        case false:
-            return 'Pendiente'
-
+const deletePlayer = async (id: number) => {
+    const response = await deleteRoster(id);
+    if (response) {
+        succesModal(response.message);
+        await getData();
     }
 }
-
-const getStatusChipColor = (status: boolean | undefined) => {
-    switch (status) {
-        case true:
-            return '#4CAF50'
-        case false:
-            return '#F44336'
-    }
-}
-
-const getRoleText = (role: Role) => {
-    switch (role) {
-        case Role.admin:
-            return Labels.roleLabels.adminRoleText
-        case Role.manager:
-            return Labels.roleLabels.managerRoleText
-        case Role.coach:
-            return Labels.roleLabels.coachRoleText
-
-    }
-}
-
-const getCategorytext = (category: Category) => {
-    switch (category) {
-        case Category.r:
-            return Labels.categoriesLabels.rCategoryText;
-        case Category.e:
-            return Labels.categoriesLabels.eCategoryText;
-        case Category.d:
-            return Labels.categoriesLabels.dCategoryText;
-        case Category.c:
-            return Labels.categoriesLabels.cCategoryText;
-        case Category.b:
-            return Labels.categoriesLabels.bCategoryText;
-        case Category.a:
-            return Labels.categoriesLabels.aCategoryText;
-
-    }
-}
-
 </script>
 
-<style scoped>
-.cant-play {
-    background-color: rgb(var(--v-theme-error));
-    color: white
-}
-
-.cant-play .v-icon {
-    background-color: rgb(var(--v-theme-error));
-    color: white
-}
-</style>
+<style scoped></style>

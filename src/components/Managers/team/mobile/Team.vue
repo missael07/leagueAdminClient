@@ -8,7 +8,7 @@
                         {{ team?.name }}
                     </h2>
                     <small class="text--secondary">{{ team.branch }}</small>
-                    <small class="text--secondary ml-4">{{ team.category }}</small>
+                    <small class="text--secondary ml-4">{{ getCategorytext(team.category) }}</small>
                 </div>
                 <div class="d-flex align-center">
                     <v-chip :color="getStatusChipColor(team?.isActive)" class="mr-2" small>
@@ -39,7 +39,7 @@
             <v-divider class="my-3" />
             <!-- Add Player Button -->
             <v-row justify="center">
-                <v-btn color="primary" class="font-weight-bold mb-2 mt-2">
+                <v-btn color="primary" class="font-weight-bold mb-2 mt-2" to="/managers/rosters/createrosterplayer">
                     <v-icon left>
                         mdi-plus
                     </v-icon>
@@ -65,7 +65,7 @@
             </div>
             <!-- Players Section -->
             <v-card class="mt-5">
-                <v-data-iterator :items="team.rosters" :items-per-page="3" :search="search">
+                <v-data-iterator :items="team.rosters" :items-per-page="2" :search="search">
                     <template #header>
                         <v-toolbar class="px-2">
                             <v-text-field v-model="search" density="comfortable" placeholder="Search"
@@ -79,7 +79,7 @@
                             <v-row dense>
                                 <v-col v-for="player in items" :key="player.raw.id" cols="auto" md="4">
                                     <v-card class="pb-3" border flat>
-                                        <v-img :src="player.raw.imgUrl" />
+                                        <v-img :src="player.raw.imgUrl" height="200" width="100%" />
 
                                         <v-list-item class="mb-2">
                                             <template #title>
@@ -88,30 +88,24 @@
                                         </v-list-item>
 
                                         <div class="d-flex justify-space-between px-2">
-                                            <div class="d-flex">
-                                                <p class="px-3">
-                                                    <v-badge v-if="!player.raw.canPlay"
-                                                        color="rgb(var(--v-theme-error))" />
-                                                </p>
-                                                <p class="px-3">
-                                                    <v-badge v-if="!player.raw.canPitch"
-                                                        color="rgb(var(--v-theme-warning))" />
-                                                </p>
-                                                <p class="px-3">
-                                                    <v-badge v-if="player.raw.isReinforcement"
-                                                        color="rgb(var(--v-theme-success))" />
-                                                </p>
+                                            <div class="d-flex ml-5">
+                                                <v-badge v-if="player.raw.blockedToPlay"
+                                                    color="rgb(var(--v-theme-error))" />
+                                                <v-badge v-if="player.raw.blockedToPitch"
+                                                    color="rgb(var(--v-theme-warning))" />
+                                                <v-badge v-if="player.raw.isReinforcement"
+                                                    color="rgb(var(--v-theme-success))" class="ml-6" />
                                             </div>
-                                            <dv class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                            <div class="d-flex align-center text-caption text-medium-emphasis me-1">
                                                 <div class="text-truncate">
-                                                    <v-icon flat>
+                                                    <v-icon flat @click="editPlayer(player.raw.id)">
                                                         {{ icons.editIcon }}
                                                     </v-icon>
                                                     <v-icon flat>
                                                         {{ icons.inactiveIcon }}
                                                     </v-icon>
                                                 </div>
-                                            </dv>
+                                            </div>
                                         </div>
                                     </v-card>
                                 </v-col>
@@ -140,61 +134,19 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { Role } from '@/enums/globaEnums';
-import { Labels } from '@/utils/consts/string';
 import { icons } from '@/utils/consts/icons';
 import useManagerTeam from '@/pages/managers/team/composable/useManagerTeam';
+import router from '@/router';
 
-const { getTeam, team } = useManagerTeam();
+const { getTeam, team, getCategorytext, getChiptext, getPaidtext, getRoleText, getStatusChipColor } = useManagerTeam();
 const search = ref('')
 
 onMounted(async () => {
-    const response = await getTeam();
-    if (response) {
-        console.log(response.rosters)
-    }
-    console.log(team.value.rosters)
+    await getTeam();
 })
 
-
-const getChiptext = (status: boolean | undefined) => {
-    switch (status) {
-        case true:
-            return 'Activo'
-        case false:
-            return 'Inactivo'
-    }
-}
-
-const getPaidtext = (status: boolean | undefined) => {
-    switch (status) {
-        case true:
-            return 'Pagado'
-        case false:
-            return 'Pendiente'
-
-    }
-}
-
-const getStatusChipColor = (status: boolean | undefined) => {
-    switch (status) {
-        case true:
-            return '#4CAF50'
-        case false:
-            return '#F44336'
-    }
-}
-
-const getRoleText = (role: Role) => {
-    switch (role) {
-        case Role.admin:
-            return Labels.roleLabels.adminRoleText
-        case Role.manager:
-            return Labels.roleLabels.managerRoleText
-        case Role.coach:
-            return Labels.roleLabels.coachRoleText
-
-    }
+const editPlayer = (id: number) => {
+    router.push(`/managers/rosters/${id}`)
 }
 </script>
 
