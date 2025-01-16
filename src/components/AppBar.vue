@@ -2,13 +2,7 @@
   <v-navigation-drawer v-if="!$vuetify.display.mobile" expand-on-hover rail color="background" :dark="false">
     <NavBar />
   </v-navigation-drawer>
-  <v-navigation-drawer v-else v-model="drawer">
-    <NavBar />
-  </v-navigation-drawer>
-
   <v-app-bar class="d-flex justify-end" color="primary">
-    <v-app-bar-nav-icon v-if="$vuetify.display.mdAndDown" variant="text"
-      @click.stop="drawer = !drawer" />
     <v-spacer />
     <div class="icon-container d-flex justify-end">
       <v-icon :icon="theme.global.current.value.dark
@@ -24,10 +18,8 @@
 import NavBar from '@/components/NavBar.vue';
 import useToggleTheme from '@/composables/useToggleTheme';
 import { icons } from '@/utils/consts/icons';
-import { ref } from 'vue';
 
 const { theme, toggleTheme } = useToggleTheme();
-const drawer = ref(false);
 
 const signOut = () => {
   localStorage.removeItem('authToken');
