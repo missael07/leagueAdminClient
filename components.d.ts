@@ -21,5 +21,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Team: typeof import('./src/components/Managers/team/mobile/Team.vue')['default']
     TeamList: typeof import('./src/components/Managers/teamList/mobile/TeamList.vue')['default']
+    UsersListMobile: typeof import('./src/components/admin/users/mobile/UsersListMobile.vue')['default']
+    UsersListWeb: typeof import('./src/components/admin/users/web/UsersListWeb.vue')['default']
   }
 }
