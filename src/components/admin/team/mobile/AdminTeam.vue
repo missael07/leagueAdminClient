@@ -73,7 +73,11 @@
                                 hide-details />
                         </v-toolbar>
                     </template>
-
+                    <template #no-data>
+                        <div align="center">
+                            No hay información disponible por el momento.
+                        </div>
+                    </template>
                     <template #default="{ items }">
                         <v-container class="pa-2" fluid>
                             <v-list lines="two">
@@ -139,20 +143,22 @@ import { onMounted, reactive, ref } from 'vue';
 import { icons } from '@/utils/consts/icons';
 import useManagerTeam from '@/pages/managers/team/composable/useManagerTeam';
 import router from '@/router';
-import { getTeamId } from '@/auth/validateAuth.service';
+import { useRoute } from 'vue-router';
 
 const { getTeam, team, getCategorytext, getChiptext, getPaidtext, getRoleText, getStatusChipColor } = useManagerTeam();
 const search = ref('')
+const route = useRoute();
 const dialogs: Record<string, boolean> = reactive({});
 
 onMounted(async () => {
-    await getTeam(getTeamId());
+    const teamId = route.params.Id;
+    await getTeam(+teamId);
 })
 
 const openDialog = (id: string) => dialogs[id] = true;;
 
 const editPlayer = (id: number) => {
-    router.push(`/managers/rosters/${id}`)
+    router.push(`/admin/rosters/${id}`)
 }
 </script>
 

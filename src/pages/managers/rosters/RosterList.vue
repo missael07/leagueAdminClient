@@ -4,8 +4,8 @@
 </template>
 
 <script setup lang="ts">
-import TeamList from '@/components/teamList/web/TeamList.vue';
-import TeamListMobile from '@/components/teamList/mobile/TeamList.vue';
+import TeamList from '@/components/Managers/teamList/web/TeamList.vue'
+import TeamListMobile from '@/components/Managers/teamList/mobile/TeamList.vue'
 </script>
 
 <style scoped>

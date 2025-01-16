@@ -3,14 +3,12 @@ import axios from "axios";
 import type { Response } from "@/interfaces/reponse.interface";
 import useHandleError from "@/composables/useHandleErrors";
 import useLoader from "@/composables/useLoader";
-import { getTeamId } from "@/auth/validateAuth.service";
-import type { RosterResponse } from "../interfaces/rosterResponse";
-import apiClient from "@/plugins/apiClient";
+import type { RosterResponse } from "@/pages/managers/rosters/interfaces/rosterResponse";
 
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}`;
 
-const useCreateRoster = () => {
+const useAdminEditRoster = () => {
 
     const roster = ref<RosterResponse>({
         id: 0,
@@ -22,38 +20,11 @@ const useCreateRoster = () => {
         blockedToPlay: false,
         isReinforcement: false,
     });
-    const term = ref("");
+
     const { displayErrors } = useHandleError();
     const { displayLoader } = useLoader();
 
-
-    const uploadImg = async (file: File) =>{
-
-        if(!file) {
-            return undefined;
-        }
-        displayLoader.value = true;
-        const formData = new FormData();
-        
-        // Agregar el archivo
-        formData.append('file', file);
-
-        try {
-            const url = `/file-upload/s3`;
-            const result = await apiClient.post(url, formData);
-
-            return result.data.item;
-        } catch (error) {
-            displayLoader.value = false;
-            if (axios.isAxiosError(error)) {
-                displayErrors(error);
-            } else {
-                console.error("Unexpected error:", error);
-            }
-        }
-    }
-
-    const createRoster = async () => {
+    const editRoster = async () => {
         displayLoader.value = true;
         const token = localStorage.getItem("authToken");
         const Authorization = `Bearer ${token}`;
@@ -61,10 +32,11 @@ const useCreateRoster = () => {
             const data = {
                 firstName: roster.value.firstName,
                 lastName: roster.value.lastName,
-                imgUrl: roster.value.imgUrl,
-                teamId: getTeamId()
+                blockedToPitch: roster.value.blockedToPitch,
+                blockedToPlay: roster.value.blockedToPlay,
+                isReinforcement: roster.value.isReinforcement,
             }
-            const response = await axios.post<Response<RosterResponse>>(`${BASE_URL}/rosters`, data, {
+            const response = await axios.patch<Response<RosterResponse>>(`${BASE_URL}/rosters/${roster.value.id}`, data, {
                 headers: {
                     Authorization,
                 },
@@ -82,12 +54,33 @@ const useCreateRoster = () => {
         }
     }
 
+    const deleteRoster = async (rosterId: number) => {
+        displayLoader.value = true;
+        const token = localStorage.getItem("authToken");
+        const Authorization = `Bearer ${token}`;
+        try {
+            const response = await axios.delete<Response<RosterResponse>>(`${BASE_URL}/rosters/${rosterId}`, {
+                headers: {
+                    Authorization,
+                },
+            });
+            displayLoader.value = false;
+            return response.data
+        } catch (error) {
+            displayLoader.value = false;
+            if (axios.isAxiosError(error)) {
+                displayErrors(error);
+            } else {
+                console.error("Unexpected error:", error);
+            }
+        }
+    }
+
     return {
-        createRoster,
+        editRoster,
         roster,
-        term,
-        uploadImg
+        deleteRoster
     }
 }
 
-export default useCreateRoster;
+export default useAdminEditRoster;

@@ -7,15 +7,19 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AdminTeam: typeof import('./src/components/admin/team/mobile/AdminTeam.vue')['default']
+    AdminTeamList: typeof import('./src/components/admin/teamList/mobile/AdminTeamList.vue')['default']
     AppBar: typeof import('./src/components/AppBar.vue')['default']
     FooterBar: typeof import('./src/components/FooterBar.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Loader: typeof import('./src/components/Loader.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
+    RegisterTeams: typeof import('./src/components/admin/teams/web/RegisterTeams.vue')['default']
+    RegisterTeamsMobile: typeof import('./src/components/admin/teams/mobile/RegisterTeamsMobile.vue')['default']
     RosterList: typeof import('./src/components/Managers/rosters/mobile/RosterList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Team: typeof import('./src/components/Managers/team/web/Team.vue')['default']
-    TeamList: typeof import('./src/components/teamList/web/TeamList.vue')['default']
+    Team: typeof import('./src/components/Managers/team/mobile/Team.vue')['default']
+    TeamList: typeof import('./src/components/Managers/teamList/mobile/TeamList.vue')['default']
   }
 }

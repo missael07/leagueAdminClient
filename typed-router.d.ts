@@ -19,7 +19,9 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/account/Settings': RouteRecordInfo<'/account/Settings', '/account/Settings', Record<never, never>, Record<never, never>>,
+    '/admin/rosters/[Id]': RouteRecordInfo<'/admin/rosters/[Id]', '/admin/rosters/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
     '/admin/rosters/RosterList': RouteRecordInfo<'/admin/rosters/RosterList', '/admin/rosters/RosterList', Record<never, never>, Record<never, never>>,
+    '/admin/rosters/team/[Id]': RouteRecordInfo<'/admin/rosters/team/[Id]', '/admin/rosters/team/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
     '/admin/team/[Id]': RouteRecordInfo<'/admin/team/[Id]', '/admin/team/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
     '/admin/team/CreateTeam': RouteRecordInfo<'/admin/team/CreateTeam', '/admin/team/CreateTeam', Record<never, never>, Record<never, never>>,
     '/admin/team/TeamList': RouteRecordInfo<'/admin/team/TeamList', '/admin/team/TeamList', Record<never, never>, Record<never, never>>,

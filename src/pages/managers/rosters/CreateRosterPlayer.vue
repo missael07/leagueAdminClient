@@ -83,18 +83,16 @@ const changeImage = (event: any) => {
 
 const save = async () => {
     displayLoader.value = true;
-    if (file.value) {
-        const response = await uploadImg(file.value)
-        if (response) {
-            roster.value.imgUrl = response.fileKey;
+        const fileResponse = await uploadImg(file.value)
+        if (fileResponse) {
+            roster.value.imgUrl = fileResponse.fileKey;
+            const response = await createRoster()
+            if (response) {
+                succesModal(response.message);
+                router.push(`/managers/rosters/${response.item.id}`)
+            }
         }
-    }
 
-    const response = await createRoster()
-    if (response) {
-        succesModal(response.message);
-        router.push(`/managers/rosters/${response.item.id}`)
-    }
 }
 </script>
 

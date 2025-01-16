@@ -4,7 +4,6 @@ import { errorModal } from "@/services/sweetAlert.service";
 import useLoader from "@/composables/useLoader";
 import type { UsersTeam } from "../interface/managerTeamsResponse.interface";
 import type { Response } from '../../../../interfaces/reponse.interface';
-import { getTeamId } from "@/auth/validateAuth.service";
 import { Category, Role } from "@/enums/globaEnums";
 import { Labels } from "@/utils/consts/string";
 
@@ -31,13 +30,12 @@ const useManagerTeam = () => {
     { key: '', title: 'Acciones', },
   ]
 
-  const getTeam = async () => {
+  const getTeam = async (teamId: number) => {
     displayLoader.value = true;
     const token = localStorage.getItem("authToken");
     const Authorization = `Bearer ${token}`;
-    const userId = getTeamId();
     try {
-      const response = await axios.get<Response<UsersTeam>>(`${BASE_URL}/teams/teamByUserId?userId=${userId} `, {
+      const response = await axios.get<Response<UsersTeam>>(`${BASE_URL}/teams/teamByUserId?userId=${teamId} `, {
         headers: {
           Authorization,
         },

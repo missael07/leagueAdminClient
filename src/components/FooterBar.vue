@@ -27,7 +27,10 @@ onMounted(async () => {
 });
 
 const isActive = (path: string) => {
+    if(path.includes('admin')) {
     const splittedPath = path.split('/');
-    return route.path.includes(`/${splittedPath[2]}`);
+    return route.path.includes(`/${splittedPath[1]}/${splittedPath[2]}`)
+  }
+  return false;
 }
 </script>

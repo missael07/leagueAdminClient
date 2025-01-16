@@ -1,4 +1,5 @@
 import type { Role } from "@/enums/globaEnums";
+import { sessionExpiredModal } from "@/services/sweetAlert.service";
 import { jwtDecode } from "jwt-decode";
 
 interface JWTResponse {
@@ -18,6 +19,8 @@ export function isAuthenticated() {
 
         // Si el token ha expirado, no hagas la llamada a la API
         if (decoded.exp <= currentTime) {
+            sessionExpiredModal('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.')
+            localStorage.removeItem('authToken');
             return false;
         }
 

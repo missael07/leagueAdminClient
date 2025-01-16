@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import useManagerRoster from '@/pages/managers/rosters/composables/useRoster';
-import { onMounted, reactive, defineProps } from 'vue';
+import { onMounted, reactive } from 'vue';
 
 interface Props {
     teamId: number;

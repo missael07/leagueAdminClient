@@ -43,16 +43,6 @@
                 </v-row>
             </div>
             <v-divider class="border-opacity-100  mt-2" color="primary" />
-            <v-row dense class="mb-2 mr-5">
-                <v-col cols="12" md="10" sm="6">
-                    <v-btn class="font-weight-regular mt-2 add" color="primary" prepend-icon="mdi-plus"
-                        text="Agregar Jugador/a" to="/managers/rosters/createrosterplayer">
-                        <template #prepend>
-                            <v-icon class="btn-icon" />
-                        </template>
-                    </v-btn>
-                </v-col>
-            </v-row>
             <div class="d-flex justify-space-around mt-5 mb-2">
                 <v-badge color="rgb(var(--v-theme-error))">
                     <template #badge>
@@ -128,23 +118,26 @@ import useManagerTeam from '@/pages/managers/team/composable/useManagerTeam';
 import router from '@/router';
 import useEditRoster from '@/pages/managers/rosters/composables/useEditRoster';
 import { succesModal } from '@/services/sweetAlert.service';
-import { getTeamId } from '@/auth/validateAuth.service';
+import { useRoute } from 'vue-router';
 
 const { getTeam, team, getCategorytext, getChiptext, getPaidtext, getRoleText, getStatusChipColor, playersHeaders } = useManagerTeam();
 const { deleteRoster } = useEditRoster();
+const route = useRoute();
+
 onMounted(async () => {
     await getData();
 })
 
 const getData = async () => {
-    await getTeam(getTeamId());
+    const teamId = route.params.Id;
+    await getTeam(+teamId);
 }
 const dialogs: Record<string, boolean> = reactive({});
 
 const openDialog = (id: string) => dialogs[id] = true;;
 
 const editPlayer = (id: number) => {
-    router.push(`/managers/rosters/${id}`)
+    router.push(`/admin/rosters/${id}`)
 }
 
 const deletePlayer = async (id: number) => {

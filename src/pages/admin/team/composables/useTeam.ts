@@ -5,13 +5,15 @@ import type { TeamResponse } from "../interface/teamResponse.interface";
 import useLoader from "@/composables/useLoader";
 import { Category } from "@/enums/globaEnums";
 import { Labels } from "@/utils/consts/string";
+import type { Response } from "@/interfaces/reponse.interface";
+import type { UsersTeam } from "@/pages/managers/team/interface/managerTeamsResponse.interface";
 
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}`;
 
+const teams = ref<TeamResponse[]>([]);
 const useTeam = () => {
 
-  const teams = ref<TeamResponse[]>([]);
   const teamsHeader = [
     { key: 'name', title: 'Equipo', },
     { key: 'categoryName', title: 'Categoria', },
@@ -97,6 +99,29 @@ const useTeam = () => {
     }
   }
 
+  const getTeamRoster = async (teamId: number) => {
+    displayLoader.value = true;
+    const token = localStorage.getItem("authToken");
+    const Authorization = `Bearer ${token}`;
+
+    try {
+      const response = await axios.get<Response<UsersTeam>>(`${BASE_URL}/teams/teamByUserId?userId=${teamId} `, {
+        headers: {
+          Authorization,
+        },
+      });
+      // team.value = response.data.item;
+      displayLoader.value = false;
+      return response.data.item
+    } catch (error) {
+      displayLoader.value = false;
+      if (axios.isAxiosError(error)) {
+        errorModal(error.response?.data.message)
+      }
+    }
+  }
+
+
   const getChiptext = (status: boolean) => {
     switch (status) {
         case true:
@@ -154,7 +179,8 @@ const getStatusChipColor = (status: boolean) => {
     getChiptext,
     getStatusChipColor,
     getCategorytext,
-    getPaidtext
+    getPaidtext,
+    getTeamRoster
   }
 }
 

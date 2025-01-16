@@ -15,4 +15,5 @@ import useLoader from '@/composables/useLoader';
 const { displayLoader } = useLoader();
 const theme = useTheme();
 theme.global.name.value = localStorage.getItem('theme') || 'light';
+
 </script>

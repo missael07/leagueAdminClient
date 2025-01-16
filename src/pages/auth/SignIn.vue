@@ -51,7 +51,7 @@ import { ref } from 'vue';
 import useSignIn from './composables/useSignIn';
 import useToggleTheme from '@/composables/useToggleTheme';
 import { useRouter } from 'vue-router';
-import { getUserRole } from '@/auth/validateAuth.service';
+import { getUserRole, isAuthenticated } from '@/auth/validateAuth.service';
 import { Role } from '@/enums/globaEnums';
 
 const { theme, toggleTheme } = useToggleTheme();
@@ -67,6 +67,13 @@ const submit = async () => {
   const response = await signIn();
   if (response) {
     localStorage.setItem('authToken', response.token);
+    const intervalId = setInterval(() => {
+      console.log(1);
+      if (!isAuthenticated()) {
+        router.push('/signin');
+        clearInterval(intervalId);  // Esto detiene el intervalo
+      }
+    }, 86400000);
     const userRole = getUserRole();
     switch (+userRole) {
       case Role.admin:
