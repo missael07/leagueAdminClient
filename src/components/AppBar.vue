@@ -17,13 +17,14 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
 import useToggleTheme from '@/composables/useToggleTheme';
+import router from '@/router';
 import { icons } from '@/utils/consts/icons';
 
 const { theme, toggleTheme } = useToggleTheme();
 
 const signOut = () => {
   localStorage.removeItem('authToken');
-  window.location.reload();
+  router.push('/signin')
 }
 
 </script>
