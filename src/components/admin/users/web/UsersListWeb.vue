@@ -19,14 +19,13 @@
                             hint="Puedes buscar por nombre o e-mail" @input="filter" @click:clear="filter" />
                     </v-col>
                     <v-col>
-                        <v-select v-model="filterValues.team" item-title="title" item-value="value"
+                        <v-select v-model="filterValues.category" item-title="title" item-value="value"
                             :label="Labels.categoriesLabels.categoryText" :items="categoriesFilter" required
                             item-color="white" class="user-companies" clearable hide-details @click:clear="filter" />
                     </v-col>
                     <v-col>
-                        <v-select v-model="filterValues.role" item-title="title" item-value="value"
-                            :label="Labels.roleLabels.roleText" :items="branchesFilter" required item-color="white"
-                            class="user-companies" clearable hide-details @click:clear="filter" />
+                        <v-select v-model="filterValues.team" item-title="title" item-value="value" :label="Labels.userLabels.teamText"
+                                :items="teams" required item-color="white" class="user-companies" variant="solo" clearable hide-details @click:clear="filter" />
                     </v-col>
                     <v-col>
                         <v-select v-model="filterValues.isActive" item-title="title" item-value="value" label="Estatus"
@@ -71,25 +70,27 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { icons } from '@/utils/consts/icons'; 
 import { categoriesFilter } from '@/utils/consts/categories';
 import { Labels } from '@/utils/consts/string';
-import { branchesFilter } from '@/utils/consts/branchs';
 import { statusTypes } from '@/utils/consts/statuses';
 import { useRouter } from 'vue-router';
 import { succesModal } from '@/services/sweetAlert.service';
 import { Role } from '@/enums/globaEnums';
 import useUser from '@/pages/admin/users/composables/useUsers';
 import useEditUser from '@/pages/admin/users/composables/useEditUser';
+import useTeam from '@/pages/admin/team/composables/useTeam';
+import type { ComboBoxItem } from '@/interfaces/comboBox.interface';
 
 
 const { getUsers, users, usersHeader, filterValues } = useUser();
 const { changeUserStatus } = useEditUser();
 const router = useRouter();
-
-
+const { getTeamsForSelect } = useTeam();
+const teams = ref<ComboBoxItem[]>([]);
 onMounted(async () => {
+    teams.value = await getTeamsForSelect();
     await filter();
 });
 
@@ -99,6 +100,7 @@ watch(filterValues, async () => {
 
 const filter = async () => {
     await getUsers();
+    
 };
 
 const getChiptext = (status: boolean) => {

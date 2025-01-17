@@ -26,6 +26,7 @@ const useUser = () => {
     team: null,
     role: null,
     isActive: null,
+    category: null
   });
 
   const term = ref("");
