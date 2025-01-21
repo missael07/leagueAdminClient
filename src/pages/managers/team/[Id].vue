@@ -2,7 +2,7 @@
     <v-container grid-list-xs>
         <v-card rounded="lg">
             <template #title>
-                <h1>Agregar Jugador/a</h1>
+                <h1>Editar Jugador/a</h1>
             </template>
             <v-card-text>
                 <v-form>
@@ -28,7 +28,7 @@
                                         :error-messages="getErrors(errors, 'lastName')" />
                                 </v-col>
                             </v-row>
-                        </v-col>
+                        </v-col>                        
                     </v-row>
                 </v-form>
             </v-card-text>
@@ -48,22 +48,36 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { icons } from '@/utils/consts/icons';
-import useCreateRoster from './composables/useCreateRoster';
 import { Labels } from '@/utils/consts/string';
 import useHandleError from '@/composables/useHandleErrors';
 import { succesModal } from '@/services/sweetAlert.service';
-import useLoader from '@/composables/useLoader';
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
+import useEditRoster from '../rosters/composables/useEditRoster';
+import useManagerRoster from '../rosters/composables/useRoster';
 
 
-const { roster, createRoster, uploadImg } = useCreateRoster();
+const { roster, editRoster } = useEditRoster();
+const { getRoster } = useManagerRoster();
 const { getErrors, errors, resetErrors } = useHandleError();
-const { displayLoader } = useLoader();
 const file = ref();
-const router = useRouter();
+const route = useRoute();
+const disabled = ref(false);
+
 
 onMounted(async () => {
     resetErrors();
+    const id = route.params.Id
+    const response = await getRoster(+id)
+    if (response) {
+        roster.value.imgUrl = response.imgUrl;
+        roster.value.firstName = response.firstName;
+        roster.value.lastName = response.lastName;
+        roster.value.blockedToPitch = response.blockedToPitch;
+        roster.value.blockedToPlay = response.blockedToPlay;
+        roster.value.isReinforcement = response.isReinforcement;
+        roster.value.id = response.id;
+        disabled.value = response.blockedToPlay;
+    }
 });
 
 const clickFileInput = () => {
@@ -84,19 +98,12 @@ const changeImage = (event: any) => {
     }
 }
 
-
 const save = async () => {
-    displayLoader.value = true;
-    const fileResponse = await uploadImg(file.value)
-    if (fileResponse) {
-        roster.value.imgUrl = fileResponse.fileKey;
-        const response = await createRoster()
-        if (response) {
-            succesModal(response.message);
-            router.push(`/managers/rosters/${response.item.id}`)
-        }
-    }
 
+    const response = await editRoster()
+    if (response) {
+        succesModal(response.message);
+    }
 }
 </script>
 

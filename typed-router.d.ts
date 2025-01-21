@@ -34,6 +34,8 @@ declare module 'vue-router/auto-routes' {
     '/managers/rosters/[Id]': RouteRecordInfo<'/managers/rosters/[Id]', '/managers/rosters/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
     '/managers/rosters/CreateRosterPlayer': RouteRecordInfo<'/managers/rosters/CreateRosterPlayer', '/managers/rosters/CreateRosterPlayer', Record<never, never>, Record<never, never>>,
     '/managers/rosters/RosterList': RouteRecordInfo<'/managers/rosters/RosterList', '/managers/rosters/RosterList', Record<never, never>, Record<never, never>>,
+    '/managers/team/[Id]': RouteRecordInfo<'/managers/team/[Id]', '/managers/team/:Id', { Id: ParamValue<true> }, { Id: ParamValue<false> }>,
+    '/managers/team/CreateRosterPlayer': RouteRecordInfo<'/managers/team/CreateRosterPlayer', '/managers/team/CreateRosterPlayer', Record<never, never>, Record<never, never>>,
     '/managers/team/TeamPage': RouteRecordInfo<'/managers/team/TeamPage', '/managers/team/TeamPage', Record<never, never>, Record<never, never>>,
   }
 }

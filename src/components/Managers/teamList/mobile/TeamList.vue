@@ -5,11 +5,6 @@
                 <h1>Cedulas</h1>
                 <v-row dense class="mb-2 mr-5">
                     <v-col cols="6">
-                        <v-text-field v-model="filterValues.term" placeholder="Buscar..."
-                            prepend-inner-icon="mdi-magnify" style="max-width: 300px;" clearable hide-details
-                            @input="filter" @click:clear="filter" />
-                    </v-col>
-                    <v-col cols="6">
                         <v-select v-model="filterValues.category" item-title="title" item-value="value"
                             :label="Labels.categoriesLabels.categoryText" :items="categoriesFilter" required
                             item-color="white" class="user-companies" clearable hide-details @click:clear="filter" />
@@ -17,11 +12,6 @@
                     <v-col cols="6">
                         <v-select v-model="filterValues.branch" item-title="title" item-value="value"
                             :label="Labels.branchLabels.branchText" :items="branchesFilter" required item-color="white"
-                            class="user-companies" clearable hide-details @click:clear="filter" />
-                    </v-col>
-                    <v-col cols="6">
-                        <v-select v-model="filterValues.isActive" item-title="title" item-value="value"
-                            :label="Labels.statusLabels.statusText" :items="statusTypes" required item-color="white"
                             class="user-companies" clearable hide-details @click:clear="filter" />
                     </v-col>
                 </v-row>
@@ -102,7 +92,6 @@ import RosterListMobile from '@/components/Managers/rosters/mobile/RosterList.vu
 import { Labels } from '@/utils/consts/string';
 import { categoriesFilter } from '@/utils/consts/categories';
 import { branchesFilter } from '@/utils/consts/branchs';
-import { statusTypes } from '@/utils/consts/statuses';
 
 const { getTeams, teams, filterValues, getCategorytext } = useTeam();
 const search = ref('');

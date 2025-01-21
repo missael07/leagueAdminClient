@@ -48,12 +48,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { icons } from '@/utils/consts/icons';
-import useCreateRoster from './composables/useCreateRoster';
 import { Labels } from '@/utils/consts/string';
 import useHandleError from '@/composables/useHandleErrors';
 import { succesModal } from '@/services/sweetAlert.service';
 import useLoader from '@/composables/useLoader';
 import { useRouter } from 'vue-router';
+import useCreateRoster from '../rosters/composables/useCreateRoster';
 
 
 const { roster, createRoster, uploadImg } = useCreateRoster();

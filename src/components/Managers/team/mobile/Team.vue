@@ -59,7 +59,7 @@
                                     prepend-inner-icon="mdi-magnify" style="max-width: 300px;" variant="solo" clearable
                                     hide-details />
                                 <v-btn color="primary" class="font-weight-bold mb-2 mt-2"
-                                    to="/managers/rosters/createrosterplayer">
+                                    to="/managers/team/createrosterplayer">
                                     <v-icon left color="primary">
                                         mdi-plus
                                     </v-icon>
