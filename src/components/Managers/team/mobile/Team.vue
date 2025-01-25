@@ -142,7 +142,7 @@ onMounted(async () => {
 const openDialog = (id: string) => dialogs[id] = true;;
 
 const editPlayer = (id: number) => {
-    router.push(`/managers/rosters/${id}`)
+    router.push(`/managers/team/${id}`)
 }
 </script>
 

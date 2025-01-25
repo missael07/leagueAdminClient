@@ -18,36 +18,30 @@
                 <template #default="{ items }">
                     <v-container class="pa-2" fluid>
                         <v-list lines="two">
-                                <v-card v-for="file in items" :key="file.raw.id" class="mb-2">
-                                    <v-list-item>
-                                        <template #prepend>
-                                            <v-avatar :image="file.raw.imgUrl" size="75" style="cursor: pointer;"
-                                                @click="openDialog(file.raw.id.toString())" />
-                                            <v-dialog v-model="dialogs[file.raw.id]" width="auto">
-                                                <div class="ma-4">
-                                                    <v-img :width="300" aspect-ratio="16/9" class="bg-white"
-                                                        :src="file.raw.imgUrl" cover />
-                                                </div>
-                                            </v-dialog>
-                                        </template>
-    
-                                        <template #title>
-                                            <strong class="text-h6 mb-2">{{ file.raw.name }}</strong>
-                                        </template>
-    
-                                        <template #append>
-                                            <div class="d-flex ml-5">
-                                                <v-badge v-if="file.raw.blockedToPlay"
-                                                    color="rgb(var(--v-theme-error))" />
-                                                <v-badge v-if="file.raw.blockedToPitch"
-                                                    color="rgb(var(--v-theme-warning))" />
-                                                <v-badge v-if="file.raw.isReinforcement"
-                                                    color="rgb(var(--v-theme-success))" class="ml-6" />
-                                            </div>
-                                        </template>
-                                    </v-list-item>
-                                </v-card>
-                            </v-list>
+                            <v-card v-for="file in items" :key="file.raw.id" class="mb-2">
+                                <v-list-item @click="openDialog(file.raw.id.toString())">
+                                    <template #title>
+                                        <strong class="text-h6 mb-2">{{ file.raw.name }}</strong>
+                                    </template>
+
+                                    <template #append>
+                                        <div class="d-flex ml-5">
+                                            <v-badge v-if="file.raw.blockedToPlay" color="rgb(var(--v-theme-error))" />
+                                            <v-badge v-if="file.raw.blockedToPitch"
+                                                color="rgb(var(--v-theme-warning))" />
+                                            <v-badge v-if="file.raw.isReinforcement" color="rgb(var(--v-theme-success))"
+                                                class="ml-6" />
+                                        </div>
+                                    </template>
+                                </v-list-item>
+                                <v-dialog v-model="dialogs[file.raw.id]" width="auto">
+                                    <div class="ma-4">
+                                        <v-img :width="300" aspect-ratio="16/9" class="bg-white" :src="file.raw.imgUrl"
+                                            cover />
+                                    </div>
+                                </v-dialog>
+                            </v-card>
+                        </v-list>
                     </v-container>
                 </template>
 

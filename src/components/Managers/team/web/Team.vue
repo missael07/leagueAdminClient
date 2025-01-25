@@ -46,7 +46,7 @@
             <v-row dense class="mb-2 mr-5">
                 <v-col cols="12" md="10" sm="6">
                     <v-btn class="font-weight-regular mt-2 add" color="primary" prepend-icon="mdi-plus"
-                        text="Agregar Jugador/a" to="/managers/rosters/createrosterplayer">
+                        text="Agregar Jugador/a" to="/managers/team/createrosterplayer">
                         <template #prepend>
                             <v-icon class="btn-icon" />
                         </template>
@@ -144,7 +144,7 @@ const dialogs: Record<string, boolean> = reactive({});
 const openDialog = (id: string) => dialogs[id] = true;;
 
 const editPlayer = (id: number) => {
-    router.push(`/managers/rosters/${id}`)
+    router.push(`/managers/team/${id}`)
 }
 
 const deletePlayer = async (id: number) => {
